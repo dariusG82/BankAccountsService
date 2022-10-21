@@ -38,17 +38,7 @@ public class CSVConverter {
             Iterable<CSVRecord> csvRecords = parser.getRecords();
 
             for (CSVRecord record : csvRecords){
-                BankAccount account = new BankAccount(
-                        record.get("AccountNumber"),
-                        LocalDate.parse(record.get("OperationDate")),
-                        LocalTime.parse(record.get("OperationTime")),
-                        record.get("Beneficiary"),
-                        record.get("Comment"),
-                        new BigDecimal(record.get("Amount")),
-                        record.get("Currency")
-                );
-
-                bankAccounts.add(account);
+                bankAccounts.add(getBankAccount(record));
             }
 
             return bankAccounts;
@@ -57,4 +47,18 @@ public class CSVConverter {
             throw new RuntimeException("Failed to parse CSV file: " + exception.getMessage());
         }
     }
+
+    private static BankAccount getBankAccount(CSVRecord record) {
+        return new BankAccount(
+                record.get("AccountNumber"),
+                LocalDate.parse(record.get("OperationDate")),
+                LocalTime.parse(record.get("OperationTime")),
+                record.get("Beneficiary"),
+                record.get("Comment"),
+                new BigDecimal(record.get("Amount")),
+                record.get("Currency")
+        );
+    }
+
+
 }
