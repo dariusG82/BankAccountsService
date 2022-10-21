@@ -1,19 +1,15 @@
 package eu.dariusgovedas.bankaccountservice.helpers;
 
 import eu.dariusgovedas.bankaccountservice.entities.BankAccount;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.csv.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CSVConverter {
@@ -48,6 +44,25 @@ public class CSVConverter {
         }
     }
 
+    public static ByteArrayInputStream bankAccountToCsv(List<BankAccount> accountList){
+        final CSVFormat csvFormat = CSVFormat.Builder.create()
+                .setQuoteMode(QuoteMode.MINIMAL).build();
+
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(outputStream), csvFormat)){
+
+            for (BankAccount account : accountList){
+                csvPrinter.printRecord(getAccountRecordList(account));
+            }
+
+            csvPrinter.flush();
+            return new ByteArrayInputStream(outputStream.toByteArray());
+        } catch (IOException exception){
+            throw new RuntimeException("Failed to import data to csv file: " + exception.getMessage());
+        }
+    }
+
+
     private static BankAccount getBankAccount(CSVRecord record) {
         return new BankAccount(
                 record.get("AccountNumber"),
@@ -60,5 +75,15 @@ public class CSVConverter {
         );
     }
 
-
+    private static List<String> getAccountRecordList(BankAccount account) {
+        return Arrays.asList(
+                account.getAccountNumber(),
+                account.getOperationDate().toString(),
+                account.getOperationTime().toString(),
+                account.getBeneficiary(),
+                account.getComment(),
+                account.getAmount().toString(),
+                account.getCurrency()
+        );
+    }
 }
