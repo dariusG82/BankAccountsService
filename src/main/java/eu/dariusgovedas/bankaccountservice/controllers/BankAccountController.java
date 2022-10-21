@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/csv")
 @AllArgsConstructor
@@ -20,15 +22,15 @@ public class BankAccountController {
     private BankAccountService bankAccountService;
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file")MultipartFile file){
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") @Valid MultipartFile file) {
         String message;
 
-        if(CSVConverter.hasCSVFormat(file)){
+        if (CSVConverter.hasCSVFormat(file)) {
             try {
                 bankAccountService.save(file);
                 message = "Uploaded file successfully: " + file.getOriginalFilename();
                 return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-            } catch (Exception exception){
+            } catch (Exception exception) {
                 message = "Could not upload file: " + file.getOriginalFilename() + "!!!";
                 return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
             }
