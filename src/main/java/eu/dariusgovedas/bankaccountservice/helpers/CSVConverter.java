@@ -2,6 +2,7 @@ package eu.dariusgovedas.bankaccountservice.helpers;
 
 import eu.dariusgovedas.bankaccountservice.entities.BankAccount;
 import org.apache.commons.csv.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class CSVConverter {
 
-
+    public static String TYPE = "text/csv";
     public static String[] HEADERS = {"Id","AccountNumber", "OperationDate", "OperationTime", "Beneficiary", "Comment", "Amount", "Currency"};
 
     public static List<BankAccount> csvToBankAccount(InputStream inputStream){
@@ -60,6 +61,10 @@ public class CSVConverter {
         } catch (IOException exception){
             throw new RuntimeException("Failed to import data to csv file: " + exception.getMessage());
         }
+    }
+
+    public static boolean hasCSVFormat(MultipartFile file) {
+        return TYPE.equals(file.getContentType());
     }
 
 
