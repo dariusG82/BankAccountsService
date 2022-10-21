@@ -26,4 +26,8 @@ public class BankAccountService {
             throw new RuntimeException("Fail to store csv data: " + exception.getMessage());
         }
     }
+
+    public List<BankAccount> getAllAccountsData() {
+        return bankAccountRepository.findAll();
+    }
 }
