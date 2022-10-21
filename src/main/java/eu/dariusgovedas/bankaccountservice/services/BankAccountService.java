@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,21 +41,35 @@ public class BankAccountService {
     }
 
     private List<BankAccount> getPeriodData(String startDate, String endDate) {
-        LocalDate dateFrom = LocalDate.EPOCH;
-        LocalDate dateTo = LocalDate.now();
+        LocalDate dateFrom = getDate(LocalDate.EPOCH, startDate);
+        LocalDate dateTo = getDate(LocalDate.now(), endDate);
 
+        return bankAccountRepository.findAccountsData(dateFrom, dateTo);
+    }
+
+    public BigDecimal getAccountBalance(String accountNr, String startDate, String endDate) {
+        LocalDate dateFrom = getDate(LocalDate.EPOCH, startDate);
+        LocalDate dateTo = getDate(LocalDate.now(), endDate);
+
+        List<BankAccount> bankAccounts = bankAccountRepository.findAccountDataForPeriod(accountNr, dateFrom, dateTo);
+
+        BigDecimal result = BigDecimal.ZERO;
+
+        for (BankAccount account : bankAccounts){
+            result = result.add(account.getAmount());
+        }
+
+        return result;
+    }
+
+    private static LocalDate getDate(LocalDate date, String startDate) {
+        LocalDate dateFrom = date;
         if (startDate != null) {
             try {
                 dateFrom = LocalDate.parse(startDate);
             } catch (Exception ignored) {
             }
         }
-        if (endDate != null) {
-            try {
-                dateTo = LocalDate.parse(endDate);
-            } catch (Exception ignored) {
-            }
-        }
-        return bankAccountRepository.findAccountsData(dateFrom, dateTo);
+        return dateFrom;
     }
 }

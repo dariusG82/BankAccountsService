@@ -15,4 +15,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
     @Query("FROM BankAccount a WHERE a.operationDate BETWEEN :start AND :end")
     List<BankAccount> findAccountsData(@Param("start") LocalDate dateFrom, @Param("end") LocalDate dateTo);
 
+    @Query("FROM BankAccount a WHERE a.accountNumber = :account AND a.operationDate BETWEEN :start AND :end")
+    List<BankAccount> findAccountDataForPeriod(@Param("account") String accountNr, @Param("start") LocalDate dateFrom, @Param("end") LocalDate dateTo);
+
 }

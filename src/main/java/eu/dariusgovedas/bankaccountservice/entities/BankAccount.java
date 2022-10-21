@@ -33,7 +33,7 @@ public class BankAccount {
     @NotEmpty
     private String beneficiary;
     private String comment;
-    @Digits(integer = Integer.MAX_VALUE, fraction = 2)
+    @Digits(integer = 20, fraction = 2)
     private BigDecimal amount;
     @NotEmpty
     private String currency;

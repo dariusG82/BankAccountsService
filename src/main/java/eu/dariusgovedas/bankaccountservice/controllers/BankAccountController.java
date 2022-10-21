@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -68,8 +69,27 @@ public class BankAccountController {
         InputStreamResource file = new InputStreamResource(bankAccountService.getBankAccountDataForPeriod(startDate, endDate));
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachmentl filename=" + fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(file);
+    }
+
+
+    @GetMapping("/balance")
+    public ResponseEntity<ResponseMessage> getAccountBalance(
+            @RequestParam String accountNr,
+            @RequestParam(required = false) String dateFrom,
+            @RequestParam(required = false) String dateTo
+    ){
+        BigDecimal accountBalance = bankAccountService.getAccountBalance(accountNr, dateFrom, dateTo);
+
+
+        String message = String.format("Account %s Balance %s%s%s",
+                accountNr,
+                dateFrom == null ? " " : "from " + dateFrom + " ",
+                dateTo == null ? "is " : "to " + dateTo + " is ",
+                accountBalance.toString());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     }
 }
