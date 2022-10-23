@@ -41,13 +41,6 @@ public class BankAccountService {
         return CSVConverter.bankAccountToCsv(accountList);
     }
 
-    private List<BankAccount> getPeriodData(String startDate, String endDate) {
-        LocalDate dateFrom = getDate(LocalDate.EPOCH, startDate);
-        LocalDate dateTo = getDate(LocalDate.now(), endDate);
-
-        return bankAccountRepository.findAccountsData(dateFrom, dateTo);
-    }
-
     public BigDecimal getAccountBalance(String accountNr, String startDate, String endDate) {
         LocalDate dateFrom = getDate(LocalDate.EPOCH, startDate);
         LocalDate dateTo = getDate(LocalDate.now(), endDate);
@@ -68,13 +61,20 @@ public class BankAccountService {
     }
 
     private static LocalDate getDate(LocalDate date, String startDate) {
-        LocalDate dateFrom = date;
+        LocalDate newDate = date;
         if (startDate != null) {
             try {
-                dateFrom = LocalDate.parse(startDate);
+                newDate = LocalDate.parse(startDate);
             } catch (Exception ignored) {
             }
         }
-        return dateFrom;
+        return newDate;
+    }
+
+    private List<BankAccount> getPeriodData(String startDate, String endDate) {
+        LocalDate dateFrom = getDate(LocalDate.EPOCH, startDate);
+        LocalDate dateTo = getDate(LocalDate.now(), endDate);
+
+        return bankAccountRepository.findAccountsData(dateFrom, dateTo);
     }
 }

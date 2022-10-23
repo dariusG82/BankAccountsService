@@ -21,7 +21,7 @@ public class CSVConverterTest {
 
     @Test
     public void isCsvToBankAccountSuccessful() throws IOException {
-        InputStream stream = Files.newInputStream(Path.of("src/test/java/eu/dariusgovedas/bankaccountservice/helper/sample.csv"));
+        InputStream stream = Files.newInputStream(Path.of("src/test/resources/sample.csv"));
 
         List<BankAccount> accounts = CSVConverter.csvToBankAccount(stream);
 
