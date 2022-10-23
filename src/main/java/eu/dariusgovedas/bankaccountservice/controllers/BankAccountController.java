@@ -69,7 +69,7 @@ public class BankAccountController {
         InputStreamResource file = new InputStreamResource(bankAccountService.getBankAccountDataForPeriod(startDate, endDate));
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment filename=" + fileName)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/csv"))
                 .body(file);
     }
@@ -80,7 +80,7 @@ public class BankAccountController {
             @RequestParam String accountNr,
             @RequestParam(required = false) String dateFrom,
             @RequestParam(required = false) String dateTo
-    ){
+    ) {
         BigDecimal accountBalance = bankAccountService.getAccountBalance(accountNr, dateFrom, dateTo);
 
 

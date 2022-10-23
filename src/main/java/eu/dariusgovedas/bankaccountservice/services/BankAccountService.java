@@ -47,20 +47,20 @@ public class BankAccountService {
 
         List<BankAccount> bankAccounts = bankAccountRepository.findAccountDataForPeriod(accountNr, dateFrom, dateTo);
 
-        if(bankAccounts.isEmpty()){
+        if (bankAccounts.isEmpty()) {
             throw new BankAccountNotFoundException(String.format("Bank account %s not found", accountNr));
         }
 
         BigDecimal result = BigDecimal.ZERO;
 
-        for (BankAccount account : bankAccounts){
+        for (BankAccount account : bankAccounts) {
             result = result.add(account.getAmount());
         }
 
         return result;
     }
 
-    private static LocalDate getDate(LocalDate date, String startDate) {
+    private LocalDate getDate(LocalDate date, String startDate) {
         LocalDate newDate = date;
         if (startDate != null) {
             try {

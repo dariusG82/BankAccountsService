@@ -16,10 +16,10 @@ import java.util.List;
 public class CSVConverter {
 
     public static String TYPE = "text/csv";
-    public static String[] HEADERS = {"Id","AccountNumber", "OperationDate", "OperationTime", "Beneficiary", "Comment", "Amount", "Currency"};
+    public static String[] HEADERS = {"Id", "AccountNumber", "OperationDate", "OperationTime", "Beneficiary", "Comment", "Amount", "Currency"};
 
-    public static List<BankAccount> csvToBankAccount(InputStream inputStream){
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))){
+    public static List<BankAccount> csvToBankAccount(InputStream inputStream) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             CSVParser parser = new CSVParser(
                     reader,
                     CSVFormat.Builder.create()
@@ -34,31 +34,31 @@ public class CSVConverter {
 
             Iterable<CSVRecord> csvRecords = parser.getRecords();
 
-            for (CSVRecord record : csvRecords){
+            for (CSVRecord record : csvRecords) {
                 bankAccounts.add(getBankAccount(record));
             }
 
             return bankAccounts;
 
-        } catch (IOException exception){
+        } catch (IOException exception) {
             throw new RuntimeException("Failed to parse CSV file: " + exception.getMessage());
         }
     }
 
-    public static ByteArrayInputStream bankAccountToCsv(List<BankAccount> accountList){
+    public static ByteArrayInputStream bankAccountToCsv(List<BankAccount> accountList) {
         final CSVFormat csvFormat = CSVFormat.Builder.create()
                 .setQuoteMode(QuoteMode.MINIMAL).build();
 
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(outputStream), csvFormat)){
+             CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(outputStream), csvFormat)) {
 
-            for (BankAccount account : accountList){
+            for (BankAccount account : accountList) {
                 csvPrinter.printRecord(getAccountRecordList(account));
             }
 
             csvPrinter.flush();
             return new ByteArrayInputStream(outputStream.toByteArray());
-        } catch (IOException exception){
+        } catch (IOException exception) {
             throw new RuntimeException("Failed to import data to csv file: " + exception.getMessage());
         }
     }

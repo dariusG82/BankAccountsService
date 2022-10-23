@@ -34,17 +34,17 @@ class BankAccountServiceTest {
     private BankAccountRepository repository;
 
     @BeforeEach
-    public void setup(){
+    public void setup() {
         BankAccount account1 = new BankAccount(
-                "LT12345", LocalDate.of(2022,5,25), LocalTime.now(), "Darius",
+                "LT12345", LocalDate.of(2022, 5, 25), LocalTime.now(), "Darius",
                 "", BigDecimal.valueOf(25), "EUR"
         );
         BankAccount account2 = new BankAccount(
-                "LT6789", LocalDate.of(2022,6,27), LocalTime.now(), "Darius",
+                "LT6789", LocalDate.of(2022, 6, 27), LocalTime.now(), "Darius",
                 "", BigDecimal.valueOf(29), "EUR"
         );
         BankAccount account3 = new BankAccount(
-                "LT6789", LocalDate.of(2022,6,30), LocalTime.now(), "Darius",
+                "LT6789", LocalDate.of(2022, 6, 30), LocalTime.now(), "Darius",
                 "", BigDecimal.valueOf(29), "EUR"
         );
 
@@ -73,8 +73,8 @@ class BankAccountServiceTest {
 
         BigDecimal value = BigDecimal.ZERO;
 
-        for(BankAccount account : accounts){
-            if(account.getAccountNumber().equals("LT12345")){
+        for (BankAccount account : accounts) {
+            if (account.getAccountNumber().equals("LT12345")) {
                 value = value.add(account.getAmount());
             }
         }
@@ -83,7 +83,7 @@ class BankAccountServiceTest {
     }
 
     @Test
-    void getAccountBalance_accountDoesNotExistThrowException(){
-        assertThrows(BankAccountNotFoundException.class, () -> service.getAccountBalance("LT000","",""));
+    void getAccountBalance_accountDoesNotExistThrowException() {
+        assertThrows(BankAccountNotFoundException.class, () -> service.getAccountBalance("LT000", "", ""));
     }
 }

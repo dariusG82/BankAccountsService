@@ -42,12 +42,12 @@ class BankAccountControllerTest {
     @Test
     void uploadFile() throws Exception {
         InputStream stream = Files.newInputStream(Path.of("src/test/resources/sample.csv"));
-        MockMultipartFile file = new MockMultipartFile("file","file.csv" , String.valueOf(MediaType.valueOf("text/csv")), stream);
+        MockMultipartFile file = new MockMultipartFile("file", "file.csv", String.valueOf(MediaType.valueOf("text/csv")), stream);
 
         MockMultipartHttpServletRequestBuilder multipartRequest =
                 MockMvcRequestBuilders.multipart("/api/csv/upload");
         mockMvc.perform(multipartRequest.file(file))
-                        .andExpect(status().isOk());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -67,7 +67,7 @@ class BankAccountControllerTest {
         given(service.getAllAccountsData()).willReturn(accounts);
 
         mockMvc.perform(get("/api/csv/accounts")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].accountNumber", is(account.getAccountNumber())));

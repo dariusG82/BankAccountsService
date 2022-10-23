@@ -25,16 +25,16 @@ public class CSVConverterTest {
 
         List<BankAccount> accounts = CSVConverter.csvToBankAccount(stream);
 
-        assertThat(accounts.size()>0).isTrue();
+        assertThat(accounts.size() > 0).isTrue();
     }
 
     @Test
-    public void isBankAccountToCsvSuccessful(){
+    public void isBankAccountToCsvSuccessful() {
         List<BankAccount> accounts = new ArrayList<>();
         BankAccount account = new BankAccount(
                 "LT277300010089649201",
-                LocalDate.of(2022,9,4),
-                LocalTime.of(12,22,32),
+                LocalDate.of(2022, 9, 4),
+                LocalTime.of(12, 22, 32),
                 "Darius Govedas",
                 "",
                 BigDecimal.valueOf(35.55),

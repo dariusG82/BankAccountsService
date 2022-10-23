@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerController {
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(BankAccountNotFoundException exception){
+    public ResponseEntity<ErrorResponse> handleException(BankAccountNotFoundException exception) {
 
         ErrorResponse error = new ErrorResponse();
 
@@ -21,7 +21,7 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse> handleException(Exception exception){
+    public ResponseEntity<ErrorResponse> handleException(Exception exception) {
 
         ErrorResponse error = new ErrorResponse();
 
