@@ -1,6 +1,7 @@
 package eu.dariusgovedas.bankaccountservice.services;
 
 import eu.dariusgovedas.bankaccountservice.entities.BankAccount;
+import eu.dariusgovedas.bankaccountservice.exceptions.BankAccountNotFoundException;
 import eu.dariusgovedas.bankaccountservice.helpers.CSVConverter;
 import eu.dariusgovedas.bankaccountservice.repositories.BankAccountRepository;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,10 @@ public class BankAccountService {
         LocalDate dateTo = getDate(LocalDate.now(), endDate);
 
         List<BankAccount> bankAccounts = bankAccountRepository.findAccountDataForPeriod(accountNr, dateFrom, dateTo);
+
+        if(bankAccounts.isEmpty()){
+            throw new BankAccountNotFoundException(String.format("Bank account %s not found", accountNr));
+        }
 
         BigDecimal result = BigDecimal.ZERO;
 
