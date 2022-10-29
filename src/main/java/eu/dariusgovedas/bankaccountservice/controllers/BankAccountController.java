@@ -1,6 +1,7 @@
 package eu.dariusgovedas.bankaccountservice.controllers;
 
 import eu.dariusgovedas.bankaccountservice.entities.BankAccount;
+import eu.dariusgovedas.bankaccountservice.helpers.AccountBalance;
 import eu.dariusgovedas.bankaccountservice.helpers.CSVConverter;
 import eu.dariusgovedas.bankaccountservice.helpers.ResponseMessage;
 import eu.dariusgovedas.bankaccountservice.services.BankAccountService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -76,20 +76,14 @@ public class BankAccountController {
 
 
     @GetMapping("/accounts/{accountNr}")
-    public ResponseEntity<ResponseMessage> getAccountBalance(
+    public ResponseEntity<AccountBalance> getAccountBalance(
             @PathVariable String accountNr,
             @RequestParam(required = false) String dateFrom,
             @RequestParam(required = false) String dateTo
             ) {
-        BigDecimal accountBalance = bankAccountService.getAccountBalance(accountNr, dateFrom, dateTo);
 
+        AccountBalance balance = bankAccountService.getAccountBalance(accountNr, dateFrom, dateTo);
 
-        String message = String.format("Account %s Balance %s%s%s",
-                accountNr,
-                dateFrom == null ? "" : "from " + dateFrom + " ",
-                dateTo == null ? "is " : "to " + dateTo + " is ",
-                accountBalance.toString());
-
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+        return new ResponseEntity<>(balance, HttpStatus.OK);
     }
 }
