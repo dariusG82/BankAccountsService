@@ -2,9 +2,8 @@
 BankAccountsService assignment
 
 To run service:
-  open command line
-  go to project directory
-  run command
+  
+open command line -> go to project directory -> run command
   
     mvc spring-boot:run
     
@@ -14,26 +13,26 @@ Endpoints:
 
   IMPORT CSV File:
 
-    http://localhost:8080/api/csv/upload
+    POST  http://localhost:8080/api/csv/accounts
 
     @RequestParam("file")
   
  
-  EXPORT csv file
+  EXPORT CSV file
   
-    http://localhost:8080/api/csv/download
+    GET http://localhost:8080/api/csv/accounts
     
-    @RequestParam(required = false) startDate,
-    @RequestParam(required = false) endDate
+    Optional parameter - startDate,
+    Optional parameter - endDate
     
   GET ACCOUNT BALANCE
     
-    http://localhost:8080/api/csv/balance
+    GET  http://localhost:8080/api/csv/accounts/{accountNr}
     
-    @RequestParam accountNr,
-    @RequestParam(required = false) dateFrom,
-    @RequestParam(required = false) dateTo
+    Mandatory parameter - accountNr - bank account number,
+    Optional parameter - dateFrom,
+    Oprional parameter - dateTo
     
   Additional end point - GET ALL ACCOUNTS DATA in Json format
   
-    http://localhost:8080/api/csv/accounts
+    GET  http://localhost:8080/api/csv/accounts/all

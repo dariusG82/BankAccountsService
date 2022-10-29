@@ -25,7 +25,7 @@ public class BankAccountController {
 
     private BankAccountService bankAccountService;
 
-    @PostMapping("/upload")
+    @PostMapping("/accounts")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") @Valid MultipartFile file) {
         String message;
 
@@ -44,7 +44,7 @@ public class BankAccountController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
     }
 
-    @GetMapping("/accounts")
+    @GetMapping("/accounts/all")
     public ResponseEntity<List<BankAccount>> getAllAccounts() {
 
         try {
@@ -60,7 +60,7 @@ public class BankAccountController {
         }
     }
 
-    @GetMapping("/download")
+    @GetMapping("/accounts")
     public ResponseEntity<Resource> getFile(
             @RequestParam(required = false) String startDate,
             @RequestParam(required = false) String endDate
@@ -75,18 +75,18 @@ public class BankAccountController {
     }
 
 
-    @GetMapping("/balance")
+    @GetMapping("/accounts/{accountNr}")
     public ResponseEntity<ResponseMessage> getAccountBalance(
-            @RequestParam String accountNr,
+            @PathVariable String accountNr,
             @RequestParam(required = false) String dateFrom,
             @RequestParam(required = false) String dateTo
-    ) {
+            ) {
         BigDecimal accountBalance = bankAccountService.getAccountBalance(accountNr, dateFrom, dateTo);
 
 
         String message = String.format("Account %s Balance %s%s%s",
                 accountNr,
-                dateFrom == null ? " " : "from " + dateFrom + " ",
+                dateFrom == null ? "" : "from " + dateFrom + " ",
                 dateTo == null ? "is " : "to " + dateTo + " is ",
                 accountBalance.toString());
 
